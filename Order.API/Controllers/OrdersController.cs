@@ -1,5 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Order.API.Dtos;
 using Order.API.Models;
 using Shared;
@@ -10,6 +11,12 @@ namespace Order.API.Controllers
     [ApiController]
     public class OrdersController(OrderDbContext dbContext, IPublishEndpoint publishEndpoint) : ControllerBase
     {
+        [HttpGet]
+        public async Task<IResult> GetOrders()
+        {
+            return Results.Ok(await dbContext.Orders.ToListAsync());
+        }
+
         [HttpPost]
         public async Task<IResult> CreateOrder(OrderCreateDto orderCreate)
         {
@@ -25,7 +32,7 @@ namespace Order.API.Controllers
                 newOrder.Items.Add(new OrderItem() { ProductId = item.ProductId, Price = item.Price, Count = item.Count });
             });
 
-            await dbContext.Orders.AddAsync(newOrder);
+            await dbContext.AddAsync(newOrder);
             await dbContext.SaveChangesAsync();
 
             var orderCreatedEvent = new OrderCreatedEvent(
@@ -52,7 +59,7 @@ namespace Order.API.Controllers
             // Send goes directly to the queue. Used when there is only one listener.
             await publishEndpoint.Publish(orderCreatedEvent);
 
-            return Results.Ok();
+            return Results.Created();
         }
     }
 }
