@@ -6,6 +6,7 @@
 
         string BuyerId,
 
-         string FailMessage
+         string FailMessage,
+         List<OrderItemMessage> OrderItems
     );
 }

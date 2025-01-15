@@ -19,7 +19,7 @@ namespace Stock.API.Consumers
                 foreach (var item in context.Message.OrderItems)
                 {
                     var stock = await dbContext.Stocks.FirstOrDefaultAsync(x => x.ProductId == item.ProductId);
-                    if (stock != null)
+                    if (stock is not null)
                     {
                         stock.Count -= item.Count;
                     }
@@ -36,10 +36,8 @@ namespace Stock.API.Consumers
             }
             else
             {
-
                 await publishEndpoint.Publish(new StockNotReservedEvent(context.Message.OrderId, "Not enough stock"));
                 logger.LogWarning($"Not enough stock for Order ID: {context.Message.OrderId}");
-
             }
         }
     }
