@@ -30,7 +30,7 @@ namespace Stock.API.Consumers
 
                 var send = await sendEndpoint.GetSendEndpoint(new Uri($"queue:{RabbitMqSettingsConst.StockReservedEventQueueName}"));
 
-                StockReserverdEvent stockReserverdEvent = new(context.Message.OrderId, context.Message.BuyerId, context.Message.Payment, context.Message.OrderItems);
+                StockReservedEvent stockReserverdEvent = new(context.Message.OrderId, context.Message.BuyerId, context.Message.Payment, context.Message.OrderItems);
 
                 await send.Send(stockReserverdEvent);
             }

@@ -1,6 +1,6 @@
 ﻿namespace Shared
 {
-    public record StockReserverdEvent
+    public record StockReservedEvent
     (
         int OrderId,
         string BuyerId,
