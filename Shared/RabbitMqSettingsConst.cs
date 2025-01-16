@@ -2,6 +2,9 @@
 {
     public class RabbitMqSettingsConst
     {
+        public const string OrderSaga = "order-saga-queue";
+
+        // Choreography
         // Stock
         public const string StockOrderCreatedEventQueueName = "stock-order-created-queue";
 

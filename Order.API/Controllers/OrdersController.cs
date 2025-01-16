@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Order.API.Dtos;
 using Order.API.Models;
 using Shared;
+using Shared.Events;
+using Shared.Interfaces;
 
 namespace Order.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController(OrderDbContext dbContext, IPublishEndpoint publishEndpoint) : ControllerBase
+    public class OrdersController(OrderDbContext dbContext, ISendEndpointProvider sendEndpoint) : ControllerBase
     {
         [HttpGet]
         public async Task<IResult> GetOrders()
@@ -35,29 +37,29 @@ namespace Order.API.Controllers
             await dbContext.AddAsync(newOrder);
             await dbContext.SaveChangesAsync();
 
-            var orderCreatedEvent = new OrderCreatedEvent(
-                newOrder.Id,
-                orderCreate.BuyerId,
-                new PaymentMessage(
+            var orderCreatedRequestEvent = new OrderCreatedRequestEvent()
+            {
+                BuyerId = orderCreate.BuyerId,
+                OrderId = newOrder.Id,
+                Payment = new PaymentMessage(
                     orderCreate.Payment.CardName,
                     orderCreate.Payment.CardNumber,
                     orderCreate.Payment.Expiration,
                     orderCreate.Payment.Cvv,
                     orderCreate.OrderItems.Sum(x => x.Price * x.Count)),
-               new List<OrderItemMessage>());
+            };
 
             orderCreate.OrderItems.ForEach(item =>
             {
-                orderCreatedEvent.OrderItems.Add(new OrderItemMessage
-                (
-                    item.ProductId,
-                    item.Count
-                ));
+                orderCreatedRequestEvent.OrderItems.Add(new OrderItemMessage(item.ProductId, item.Count));
             });
 
             // Goes to Exchange. you need to subscribe to get the published data. Used when there is more than one listener.
             // Send goes directly to the queue. Used when there is only one listener.
-            await publishEndpoint.Publish(orderCreatedEvent);
+
+            var send = await sendEndpoint.GetSendEndpoint(new Uri($"queue:{RabbitMqSettingsConst.OrderSaga}"));
+
+            await send.Send<IOrderCreatedRequestEvent>(orderCreatedRequestEvent);
 
             return Results.Created();
         }

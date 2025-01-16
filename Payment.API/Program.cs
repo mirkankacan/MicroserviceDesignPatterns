@@ -1,8 +1,6 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Payment.API.Consumers;
 using Payment.API.Models;
-using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,18 +19,12 @@ builder.Services.AddDbContext<PaymentDbContext>(opts =>
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
-    x.AddConsumer<StockReservedEventConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), host =>
         {
             host.Username(builder.Configuration["MessageBroker:UserName"]!);
             host.Password(builder.Configuration["MessageBroker:Password"]!);
-        });
-
-        cfg.ReceiveEndpoint(RabbitMqSettingsConst.StockReservedEventQueueName, e =>
-        {
-            e.ConfigureConsumer<StockReservedEventConsumer>(context);
         });
     });
 });

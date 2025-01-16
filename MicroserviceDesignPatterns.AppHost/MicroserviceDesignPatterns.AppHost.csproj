@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Order.API\Order.API.csproj" />
     <ProjectReference Include="..\Payment.API\Payment.API.csproj" />
+    <ProjectReference Include="..\SagaStateMachineWorkerService\SagaStateMachineWorkerService.csproj" />
     <ProjectReference Include="..\Stock.API\Stock.API.csproj" />
   </ItemGroup>
 
