@@ -22,6 +22,7 @@ builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
     x.AddConsumer<OrderCreatedEventConsumer>();
+    x.AddConsumer<StockRollbackMessageConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), host =>
@@ -32,6 +33,10 @@ builder.Services.AddMassTransit(x =>
         cfg.ReceiveEndpoint(RabbitMqSettingsConst.StockOrderCreatedEventQueueName, e =>
         {
             e.ConfigureConsumer<OrderCreatedEventConsumer>(context);
+        });
+        cfg.ReceiveEndpoint(RabbitMqSettingsConst.StockRollbackMessageQueueName, e =>
+        {
+            e.ConfigureConsumer<StockRollbackMessageConsumer>(context);
         });
     });
 });
