@@ -1,6 +1,8 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Order.API.Consumers;
 using Order.API.Models;
+using Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,13 +21,17 @@ builder.Services.AddDbContext<OrderDbContext>(opts =>
 builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
-
+    x.AddConsumer<OrderRequestCompletedEventConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host(new Uri(builder.Configuration["MessageBroker:Host"]!), host =>
         {
             host.Username(builder.Configuration["MessageBroker:UserName"]!);
             host.Password(builder.Configuration["MessageBroker:Password"]!);
+        });
+        cfg.ReceiveEndpoint(RabbitMqSettingsConst.OrderRequestCompletedEventQueueName, x =>
+        {
+            x.ConfigureConsumer<OrderRequestCompletedEventConsumer>(context);
         });
     });
 });
