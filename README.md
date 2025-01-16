@@ -9,7 +9,6 @@ This repository contains a collection of microservice design patterns implemente
 - [Patterns Implemented](#patterns-implemented)
 - [Branches](#branches)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
 - [License](#license)
 
 ## Introduction
@@ -23,8 +22,7 @@ Microservice Design Patterns is a project that showcases different design patter
 - RabbitMQ
 - Entity Framework Core
 - Docker
-- Swagger
-
+  
 ## Patterns Implemented
 
 - Saga Pattern
@@ -67,27 +65,11 @@ cd MicroserviceDesignPatterns
 ```
 git checkout <branch-name>
 ```
-4. Build the Docker containers:
+4. Run the Docker containers:
 ```
 docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
-docker-compose up --build
 ```
 
-## Usage
-
-Each microservice can be run independently. You can use tools like Postman or Swagger to interact with the APIs.
-
-### Running the Services
-
-1. Start the services using Docker Compose:
-```
-docker-compose up
-```
-2. Access the services via the API Gateway at `http://localhost:5000`.
-
-### Swagger
-
-Each service has its own Swagger documentation available at `http://localhost:<port>/swagger`.
 
 ## License
 
