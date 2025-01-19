@@ -37,19 +37,13 @@ This repository uses branches to separate different design patterns and implemen
 - `master`: The main branch containing the core setup and common utilities.
 - `SagaChoreographyPattern`: Implementation of the Choreography based Saga Pattern.
 - `SagaOrchestrationPattern`:  Implementation of the Orchestration based Saga Pattern.
+- `EventSourcingPattern`:  Implementation of the Event Sourcing Pattern.
 
 You can switch to a specific branch to explore the corresponding pattern implementation.
 
 ## Getting Started
 
 To get a local copy up and running, follow these steps.
-
-### Prerequisites
-
-- .NET 9 SDK
-- Docker
-- RabbitMQ
-- SQL Server
 
 ### Installation
 
