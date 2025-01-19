@@ -20,6 +20,8 @@ Microservice Design Patterns is a project that showcases different design patter
 - .NET 9
 - MassTransit
 - RabbitMQ
+- MS SQL
+- Event Store
 - Entity Framework Core
 - Docker
   
@@ -58,10 +60,6 @@ cd MicroserviceDesignPatterns
 3. Checkout the branch you are interested in:
 ```
 git checkout <branch-name>
-```
-4. Run the Docker containers:
-```
-docker run -d --hostname rabbitmq --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
 ```
 
 
