@@ -1,12 +1,21 @@
+version: '3.9'
+
 services:
+  eventstoredb:
+    container_name: eventstoredb
+    environment:
+      - EVENTSTORE_LOG_LEVEL=Verbose
+
   eventsourcing.api:
+    container_name: eventsourcing.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__EventStore=tcp://admin:changeit@localhost:1113
     ports:
-      - "8080"
-      - "8081"
+      - "6001:8080"
+      - "6061:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

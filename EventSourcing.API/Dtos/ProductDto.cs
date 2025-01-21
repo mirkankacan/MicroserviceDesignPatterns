@@ -1,6 +1,4 @@
 ﻿namespace EventSourcing.API.Dtos
 {
-    public class ProductDto
-    {
-    }
+    public sealed record ProductDto(Guid Id, string Name, int Stock, decimal Price, int UserId);
 }

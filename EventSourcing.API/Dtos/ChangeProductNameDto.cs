@@ -1,6 +1,4 @@
 ﻿namespace EventSourcing.API.Dtos
 {
-    public class ChangeProductNameDto
-    {
-    }
+    public sealed record ChangeProductNameDto(Guid Id, string Name);
 }

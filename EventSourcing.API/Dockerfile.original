@@ -13,7 +13,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["EventSourcing.API/EventSourcing.API.csproj", "EventSourcing.API/"]
-COPY ["EventSourcing.Shared/EventSourcing.Shared.csproj", "EventSourcing.Shared/"]
 RUN dotnet restore "./EventSourcing.API/EventSourcing.API.csproj"
 COPY . .
 WORKDIR "/src/EventSourcing.API"
