@@ -13,7 +13,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(opts =>
 {
-    opts.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")!);
+    opts.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")!, options =>
+    {
+        options.EnableRetryOnFailure();
+    });
 });
 
 builder.Services.AddEventStore(builder.Configuration);
