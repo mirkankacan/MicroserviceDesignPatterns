@@ -6,9 +6,9 @@ namespace EventSourcing.API.Handlers
 {
     public class ChangeProductPriceCommandHandler(ProductStream productStream) : IRequestHandler<ChangeProductPriceCommand, Unit>
     {
-        public async Task<Unit> Handle(ChangeProductPriceCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ChangeProductPriceCommand command, CancellationToken cancellationToken)
         {
-            productStream.PriceChanged(request.ChangeProductPriceDto);
+            productStream.PriceChanged(command.ChangeProductPriceDto);
             await productStream.SaveAsync();
             return Unit.Value;
         }

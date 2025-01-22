@@ -1,5 +1,6 @@
 ﻿using EventSourcing.API.Command;
 using EventSourcing.API.Dtos;
+using EventSourcing.API.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,27 @@ namespace EventSourcing.API.Controllers
     [ApiController]
     public class ProductsController(IMediator mediator) : ControllerBase
     {
+        [HttpGet]
+        public async Task<IActionResult> GetProducts()
+        {
+            var values = await mediator.Send(new GetProductsQuery());
+            return Ok(values);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById(Guid id)
+        {
+            var value = await mediator.Send(new GetProductByIdQuery(id));
+            return Ok(value);
+        }
+
+        [HttpGet("{pageIndex}/{pageSize}")]
+        public async Task<IActionResult> GetProductsPaginated(int pageIndex, int pageSize)
+        {
+            var values = await mediator.Send(new GetProductsPaginatedQuery(pageIndex, pageSize));
+            return Ok(values);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateProduct(CreateProductDto createProductDto)
         {

@@ -6,9 +6,9 @@ namespace EventSourcing.API.Handlers
 {
     public class DeleteProductCommandHandler(ProductStream productStream) : IRequestHandler<DeleteProductCommand, Unit>
     {
-        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteProductCommand command, CancellationToken cancellationToken)
         {
-            productStream.Deleted(request.Id);
+            productStream.Deleted(command.Id);
             await productStream.SaveAsync();
             return Unit.Value;
         }

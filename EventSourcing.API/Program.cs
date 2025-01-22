@@ -1,3 +1,4 @@
+using EventSourcing.API.BackgroundServices;
 using EventSourcing.API.EventStores;
 using EventSourcing.API.Extensions;
 using EventSourcing.API.Models;
@@ -21,6 +22,8 @@ builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
+
+builder.Services.AddHostedService<ProductReadModelEventStore>();
 
 builder.Services.AddSingleton<ProductStream>();
 
