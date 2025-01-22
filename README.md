@@ -40,6 +40,7 @@ This repository uses branches to separate different design patterns and implemen
 - `SagaChoreographyPattern`: Implementation of the Choreography based Saga Pattern.
 - `SagaOrchestrationPattern`:  Implementation of the Orchestration based Saga Pattern.
 - `EventSourcingPattern`:  Implementation of the Event Sourcing Pattern.
+- `ResiliencyPattern`:  Implementation of the Circuit Breaker Pattern.
 
 You can switch to a specific branch to explore the corresponding pattern implementation.
 
